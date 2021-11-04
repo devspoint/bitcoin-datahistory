@@ -6,12 +6,10 @@ import br.com.devspoint.bitcoindatahistory.repository.BitCoinHistoryRepository
 import org.springframework.data.domain.Sort
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.kotlin.core.publisher.toMono
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -36,9 +34,10 @@ class DataHistoryController(
         return findAllHistory()
     }
 
-    private fun findAllHistory() = repository
-        .findAll(Sort.by("order").ascending())
-        .delayElements(Duration.ofMillis(100L))
+    private fun findAllHistory() =
+        repository
+            .findAll(Sort.by("order").ascending())
+            .delayElements(Duration.ofMillis(100L))
 
     private fun seed(): Mono<BitCoinHistoryEntity> {
         val bitCoinHistoryEntities = mutableListOf<BitCoinHistoryEntity>()
